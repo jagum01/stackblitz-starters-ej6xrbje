@@ -1,19 +1,3 @@
-const lis = document.querySelectorAll("li");
-const a = document.querySelectorAll("li a");
-
-for (let i = 0; i < lis.length; i++) {
-  lis[i].addEventListener("click", function() {
-    for (let i = 0; i < lis.length; i++) {
-      lis[i].classList.remove("active");
-      a[i].classList.remove("active-text");
-    }
-    this.classList.add("active");
-    a[i].classList.add("active-text");
-  });
-}
-
-//Barra de busqueda y consulta de la Api
-// app.js
 // app.js
 const input = document.createElement('input');
 input.placeholder = 'Nombre o ID';
@@ -29,6 +13,9 @@ const out = document.createElement('div');
 document.body.append(input, btn, error, out);
 
 btn.addEventListener('click', buscar);
+input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') buscar();
+});
 
 async function buscar() {
   const q = input.value.trim().toLowerCase();
@@ -76,3 +63,4 @@ async function buscar() {
     error.textContent = 'Pokémon no encontrado.';
   }
 }
+// Se agrega tecla enter para buscar
