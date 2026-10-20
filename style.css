@@ -25,13 +25,6 @@ h1 {
   font-size: 1.5rem;
 }
 
-#nav-container {
-  position: fixed
-}
-
-
-
-
 .buttons-container {
   position: absolute;
   margin: auto;
