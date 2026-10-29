@@ -63,4 +63,3 @@ async function buscar() {
     error.textContent = "Pokémon no encontrado.";
   }
 }
-// Se agrega tecla enter para buscar
