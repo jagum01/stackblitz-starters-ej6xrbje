@@ -1,16 +1,13 @@
 // app.js
-const input = document.createElement("input");
+const input = document.getElementById("input");
 input.placeholder = "Nombre o ID";
 
-const btn = document.createElement("button");
-btn.textContent = "Buscar";
+const btn = document.getElementById("boton");
 
-const error = document.createElement("p");
+const error = document.getElementById("texto");
 error.style.color = "red";
 
-const out = document.createElement("div");
-
-document.body.append(input, btn, error, out);
+const out = document.getElementById("respuestaApi");
 
 btn.addEventListener("click", buscar);
 input.addEventListener("keydown", (e) => {
