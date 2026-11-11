@@ -4,7 +4,6 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.119.0",
     "servor": "^4.0.2",
     "vite": "^7.2.2"
   }

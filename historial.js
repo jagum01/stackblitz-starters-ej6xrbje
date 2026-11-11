@@ -1,23 +1,28 @@
-import { supabase } from "./supabaseClient.js";
+const CLAVE_HISTORIAL = "pokedex_historial";
+const LIMITE_HISTORIAL = 12;
 
-const limiteHistorial = 12;
+export function cargarHistorial() {
+  const guardado = sessionStorage.getItem(CLAVE_HISTORIAL);
+  if (!guardado) return [];
 
-export async function cargarHistorial() {
-  const { data, error } = await supabase
-    .from("search_history")
-    .select("id, pokemon_id, pokemon_name, created_at")
-    .order("created_at", { ascending: false })
-    .limit(limiteHistorial);
-
-  if (error) throw error;
-  return data ?? [];
+  try {
+    const historial = JSON.parse(guardado);
+    return Array.isArray(historial) ? historial : [];
+  } catch {
+    sessionStorage.removeItem(CLAVE_HISTORIAL);
+    return [];
+  }
 }
 
-export async function guardarBusqueda(pokemon) {
-  const { error } = await supabase.from("search_history").insert({
+export function guardarBusqueda(pokemon) {
+  const historial = cargarHistorial();
+  const nuevaBusqueda = {
+    id: `${pokemon.id}-${Date.now()}`,
     pokemon_id: pokemon.id,
     pokemon_name: pokemon.name,
-  });
+  };
 
-  if (error) throw error;
+  const actualizado = [nuevaBusqueda, ...historial].slice(0, LIMITE_HISTORIAL);
+  sessionStorage.setItem(CLAVE_HISTORIAL, JSON.stringify(actualizado));
+  return actualizado;
 }

@@ -30,13 +30,9 @@ siguiente.addEventListener("click", () => moverHistorial(1));
 
 iniciarHistorial();
 
-async function iniciarHistorial() {
-  try {
-    historial = await cargarHistorial();
-    pintarHistorial();
-  } catch {
-    pintarHistorial("El historial no está disponible ahora.");
-  }
+function iniciarHistorial() {
+  historial = cargarHistorial();
+  pintarHistorial();
 }
 
 async function buscar(valor) {
@@ -69,15 +65,10 @@ async function buscar(valor) {
   }
 }
 
-async function guardarEnHistorial(pokemon) {
-  try {
-    await guardarBusqueda(pokemon);
-    historial = await cargarHistorial();
-    indiceHistorial = 0;
-    pintarHistorial();
-  } catch {
-    error.textContent = "Pokémon encontrado, pero no se pudo guardar en el historial.";
-  }
+function guardarEnHistorial(pokemon) {
+  historial = guardarBusqueda(pokemon);
+  indiceHistorial = 0;
+  pintarHistorial();
 }
 
 async function obtenerEspecie(url) {
