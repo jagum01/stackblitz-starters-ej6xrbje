@@ -24,8 +24,21 @@
       </div>
       <p class="parrafo" id="texto"></p>
       <div class="divresp" id="respuestaApi"></div>
+      <section class="historial" aria-labelledby="titulo-historial">
+        <div class="historial-titulo">
+          <div>
+            <span class="eyebrow">Segunda forma de buscar</span>
+            <h2 id="titulo-historial">Historial reciente</h2>
+          </div>
+          <div class="controles-historial">
+            <button class="control" id="anterior" type="button" aria-label="Búsqueda anterior">‹</button>
+            <button class="control" id="siguiente" type="button" aria-label="Búsqueda siguiente">›</button>
+          </div>
+        </div>
+        <p class="instruccion">Arrastra las tarjetas hacia los lados o selecciona una para buscarla otra vez.</p>
+        <div class="historial-carrusel" id="historialCarrusel" aria-live="polite"></div>
+      </section>
     </div>
-    <script src="app.js" defer></script>
-    <script src="historial.js" defer></script>
+    <script type="module" src="app.js"></script>
   </body>
 </html>

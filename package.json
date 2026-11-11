@@ -1,8 +1,11 @@
 {
   "scripts": {
-    "start": "servor --reload"
+    "start": "vite",
+    "build": "vite build"
   },
   "dependencies": {
-    "servor": "^4.0.2"
+    "@supabase/supabase-js": "^2.119.0",
+    "servor": "^4.0.2",
+    "vite": "^7.2.2"
   }
 }
