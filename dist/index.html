@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>Pokédex</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <meta property="og:image" content="https://bolt.new/static/og_default.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
+    <script type="module" crossorigin src="/assets/index-oOJRhMgT.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BkaNEI8N.css">
+  </head>
+  <body>
+    <header class="cabecera">
+      <h1>Pokédex</h1>
+      <p>Busca un Pokémon por nombre o número</p>
+    </header>
+    <div id="contenedor">
+      <div class="campo">
+        <input class="barra" id="input" />
+        <button class="button" id="boton">Buscar</button>
+      </div>
+      <p class="parrafo" id="texto"></p>
+      <div class="divresp" id="respuestaApi"></div>
+      <section class="historial" aria-labelledby="titulo-historial">
+        <div class="historial-titulo">
+          <div>
+            <span class="eyebrow">Segunda forma de buscar</span>
+            <h2 id="titulo-historial">Historial reciente</h2>
+          </div>
+          <div class="controles-historial">
+            <button class="control" id="anterior" type="button" aria-label="Búsqueda anterior">‹</button>
+            <button class="control" id="siguiente" type="button" aria-label="Búsqueda siguiente">›</button>
+          </div>
+        </div>
+        <p class="instruccion">Arrastra las tarjetas hacia los lados o selecciona una para buscarla otra vez.</p>
+        <div class="historial-carrusel" id="historialCarrusel" aria-live="polite"></div>
+      </section>
+    </div>
+  </body>
+</html>
