@@ -56,7 +56,7 @@ async function buscar(valor) {
     if (!res.ok) throw new Error("No encontrado");
     const pokemon = await res.json();
     const especie = await obtenerEspecie(pokemon.species.url);
-    out.replaceChildren(crearTarjeta(pokemon, especie));
+    out.replaceChildren(await crearTarjeta(pokemon, especie));
     input.value = pokemon.name;
     await guardarEnHistorial(pokemon);
   } catch (e) {
@@ -99,8 +99,13 @@ function seccion(titulo, contenido) {
   return s;
 }
 
-function crearTarjeta(p, especie) {
+async function crearTarjeta(p, especie) {
   const color = COLORES[especie?.color?.name] ?? COLORES.gray;
+  const nombre = obtenerNombreEnEspañol(especie, p.name);
+  const [tipos, habilidades] = await Promise.all([
+    obtenerNombresEnEspañol(p.types),
+    obtenerNombresEnEspañol(p.abilities),
+  ]);
   const descripcion = especie?.flavor_text_entries
     ?.find((e) => e.language.name === "es")?.flavor_text.replace(/\s+/g, " ") ?? "Sin descripción disponible.";
   const imagenUrl = p.sprites.other?.["official-artwork"]?.front_default ?? p.sprites.front_default;
@@ -114,21 +119,40 @@ function crearTarjeta(p, especie) {
   imagen.append(img);
 
   const cabecera = crear("div", "tarjeta-cabecera");
-  cabecera.append(crear("h2", "nombre", p.name), crear("span", "numero", `#${String(p.id).padStart(3, "0")}`));
+  cabecera.append(crear("h2", "nombre", nombre), crear("span", "numero", `#${String(p.id).padStart(3, "0")}`));
 
-  const tipos = crear("div", "tipos");
-  tipos.append(...p.types.map((t) => crear("span", "tipo", t.type.name)));
+  const tiposVista = crear("div", "tipos");
+  tiposVista.append(...tipos.map((tipo) => crear("span", "tipo", tipo)));
 
   const estadisticas = crear("div", "estadisticas");
   estadisticas.append(estadistica("Altura", `${p.height / 10} m`), estadistica("Peso", `${p.weight / 10} kg`));
 
-  const habilidades = crear("ul", "habilidades");
-  habilidades.append(...p.abilities.map((a) => crear("li", "", a.ability.name)));
+  const habilidadesVista = crear("ul", "habilidades");
+  habilidadesVista.append(...habilidades.map((habilidad) => crear("li", "", habilidad)));
 
   const cuerpo = crear("div", "tarjeta-cuerpo");
-  cuerpo.append(cabecera, tipos, estadisticas, seccion("Habilidades", habilidades), seccion("Descripción", crear("p", "descripcion", descripcion)));
+  cuerpo.append(cabecera, tiposVista, estadisticas, seccion("Habilidades", habilidadesVista), seccion("Descripción", crear("p", "descripcion", descripcion)));
   tarjeta.append(imagen, cuerpo);
   return tarjeta;
+}
+
+function obtenerNombreEnEspañol(especie, nombreOriginal) {
+  return especie?.names?.find((item) => item.language.name === "es")?.name ?? nombreOriginal;
+}
+
+async function obtenerNombresEnEspañol(recursos) {
+  return Promise.all(recursos.map(async (recurso) => {
+    try {
+      const res = await fetch(recurso.type?.url ?? recurso.ability.url);
+      if (!res.ok) return recurso.type?.name ?? recurso.ability.name;
+      const datos = await res.json();
+      return datos.names?.find((item) => item.language.name === "es")?.name
+        ?? recurso.type?.name
+        ?? recurso.ability.name;
+    } catch {
+      return recurso.type?.name ?? recurso.ability.name;
+    }
+  }));
 }
 
 function pintarHistorial(mensaje) {
